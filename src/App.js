@@ -7,16 +7,24 @@ function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [rolls, SetRolls] = React.useState(0)
-  const [bestvaule, setBestvaule] = React.useState(0)
-  
+  const [bestRolls, setBestRolls] = React.useState(JSON.parse(localStorage.getItem("bestRolls"))||0)
+
   React.useEffect(() => {
     if (dice.every((die) => die.isHeld && die.value === dice[0].value)) {
       setTenzies(true);
-      if(bestvaule === 0 || bestvaule > rolls ){
-        setBestvaule(rolls)
       }
-    }
   }, [dice]);
+
+React.useEffect(()=>{
+  if(tenzies){
+    if(bestRolls === 0 || bestRolls > rolls){
+      localStorage.setItem("bestRolls",JSON.stringify(rolls))
+      setBestRolls(rolls)
+    }
+    
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+},[tenzies])
 
   function generateNewDie() {
     return {
@@ -48,6 +56,8 @@ function App() {
     />
   ));
 
+
+
   function Roll() {
     if(!tenzies){
       SetRolls(prev=> prev+1)
@@ -74,7 +84,7 @@ function App() {
         {tenzies ? "New Game" : "Roll"}
       </button>
       {tenzies && <p>You took {rolls} roll to Win!</p>}
-      {tenzies && <p>Your best rolls is {bestvaule}</p>}
+      {tenzies && <p>Your best rolls is {bestRolls}</p>}
     </main>
   );
 }
