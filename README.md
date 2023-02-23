@@ -1,3 +1,7 @@
+check it out 
+https://omsa2004.github.io/game_tenzies/
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
