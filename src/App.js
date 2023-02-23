@@ -6,9 +6,15 @@ import Confetti from 'react-confetti'
 function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
+  const [rolls, SetRolls] = React.useState(0)
+  const [bestvaule, setBestvaule] = React.useState(0)
+  
   React.useEffect(() => {
     if (dice.every((die) => die.isHeld && die.value === dice[0].value)) {
       setTenzies(true);
+      if(bestvaule === 0 || bestvaule > rolls ){
+        setBestvaule(rolls)
+      }
     }
   }, [dice]);
 
@@ -44,10 +50,12 @@ function App() {
 
   function Roll() {
     if(!tenzies){
+      SetRolls(prev=> prev+1)
       setDice((oldDice) =>
       oldDice.map((die, i) => (die.isHeld ? die : generateNewDie()))
       );
     } else{
+      SetRolls(0)
       setDice(allNewDice())
       setTenzies(false)
     }
@@ -65,6 +73,8 @@ function App() {
       <button onClick={Roll} className="roleDice">
         {tenzies ? "New Game" : "Roll"}
       </button>
+      {tenzies && <p>You took {rolls} roll to Win!</p>}
+      {tenzies && <p>Your best rolls is {bestvaule}</p>}
     </main>
   );
 }
